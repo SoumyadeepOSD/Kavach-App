@@ -121,7 +121,20 @@ class _PhoneState extends State<Phone> {
 
 void _callLogs() async {
   Iterable<CallLogEntry> entries = await CallLog.get();
+  bool isValidIndianPhoneNumber(String phoneNumber) {
+    final pattern = r'^(\+91|0)?[6789]\d{9}$';
+    final regex = RegExp(pattern);
+    return regex.hasMatch(phoneNumber);
+  }
+
+  var flag;
   for (var item in entries) {
-    print(item.name);
+    final isValid = isValidIndianPhoneNumber(item.number.toString());
+    if (isValid) {
+      flag = "Safe";
+    } else {
+      flag = "Non-Safe";
+    }
+    print('Number: ${item.number} => ${flag}');
   }
 }
