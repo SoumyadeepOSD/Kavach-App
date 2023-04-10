@@ -4,6 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:phone_state/phone_state.dart';
 
+Iterable<CallLogEntry> callList = [];
+
+bool isValidIndianPhoneNumber(String phoneNumber) {
+  final pattern = r'^(\+91|0)?[6789]\d{9}$';
+  final regex = RegExp(pattern);
+  return regex.hasMatch(phoneNumber);
+}
+
 class Phone extends StatefulWidget {
   const Phone({Key? key}) : super(key: key);
 
@@ -13,8 +21,9 @@ class Phone extends StatefulWidget {
 
 class _PhoneState extends State<Phone> {
   PhoneStateStatus status = PhoneStateStatus.NOTHING;
-  bool granted = false;
+  final PhoneState phoneState = PhoneState();
 
+  bool granted = false;
   Future<bool> requestPermission() async {
     var status = await Permission.phone.request();
 
@@ -49,43 +58,57 @@ class _PhoneState extends State<Phone> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Phone State"),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        backgroundColor: Colors.black,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Text("Log Status"),
             ElevatedButton(
               child: Text('Get logs'),
               onPressed: () {
                 _callLogs();
               },
             ),
-            if (Platform.isAndroid)
-              MaterialButton(
-                child: const Text("Request permission of Phone"),
-                onPressed: !granted
-                    ? () async {
-                        bool temp = await requestPermission();
-                        setState(() {
-                          granted = temp;
-                          if (granted) {
-                            setStream();
-                          }
-                        });
-                      }
-                    : null,
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.only(top: 5),
+                child: callList == null
+                    ? Center(child: CircularProgressIndicator())
+                    : Column(
+                        children: callList.map((Callone) {
+                        //populating children to column using map
+
+                        return Container(
+                          child: Card(
+                              color: isValidIndianPhoneNumber(
+                                      Callone.number.toString())
+                                  ? Colors.green
+                                  : Colors.red,
+                              child: ListTile(
+                                leading: Icon(Icons.call),
+                                title: Padding(
+                                    child: Text(Callone.name.toString()),
+                                    padding: EdgeInsets.only(
+                                        bottom: 10,
+                                        top: 10)), // printing address
+                                subtitle: Padding(
+                                    child: Text(Callone.number.toString()),
+                                    padding: EdgeInsets.only(
+                                        bottom: 10,
+                                        top:
+                                            10)), //pringint date time, and body
+                              )),
+                        );
+                      }).toList()),
               ),
-            const Text(
-              "Status of call",
-              style: TextStyle(fontSize: 24),
-            ),
-            Icon(
-              getIcons(),
-              color: getColor(),
-              size: 80,
             )
           ],
         ),
@@ -93,48 +116,28 @@ class _PhoneState extends State<Phone> {
     );
   }
 
-  IconData getIcons() {
-    switch (status) {
-      case PhoneStateStatus.NOTHING:
-        return Icons.clear;
-      case PhoneStateStatus.CALL_INCOMING:
-        return Icons.add_call;
-      case PhoneStateStatus.CALL_STARTED:
-        return Icons.call;
-      case PhoneStateStatus.CALL_ENDED:
-        return Icons.call_end;
+  void _callLogs() async {
+    Iterable<CallLogEntry> entries = await CallLog.get();
+    bool isValidIndianPhoneNumber(String phoneNumber) {
+      final pattern = r'^(\+91|0)?[6789]\d{9}$';
+      final regex = RegExp(pattern);
+      return regex.hasMatch(phoneNumber);
     }
-  }
 
-  Color getColor() {
-    switch (status) {
-      case PhoneStateStatus.NOTHING:
-      case PhoneStateStatus.CALL_ENDED:
-        return Colors.red;
-      case PhoneStateStatus.CALL_INCOMING:
-        return Colors.green;
-      case PhoneStateStatus.CALL_STARTED:
-        return Colors.orange;
+    setState(() {
+      callList = entries;
+    });
+
+    bool flag;
+    for (var item in entries) {
+      final isValid = isValidIndianPhoneNumber(item.number.toString());
+      if (isValid && item.name != null) {
+        flag = false;
+      } else {
+        flag = true;
+      }
+
+      print('Name: ${item.name} , Number: ${item.number} => ${flag}');
     }
-  }
-}
-
-void _callLogs() async {
-  Iterable<CallLogEntry> entries = await CallLog.get();
-  bool isValidIndianPhoneNumber(String phoneNumber) {
-    final pattern = r'^(\+91|0)?[6789]\d{9}$';
-    final regex = RegExp(pattern);
-    return regex.hasMatch(phoneNumber);
-  }
-
-  var flag;
-  for (var item in entries) {
-    final isValid = isValidIndianPhoneNumber(item.number.toString());
-    if (isValid) {
-      flag = "Safe";
-    } else {
-      flag = "Non-Safe";
-    }
-    print('Number: ${item.number} => ${flag}');
   }
 }
