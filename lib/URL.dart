@@ -17,7 +17,7 @@ class _URLState extends State<URL> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text('Varify URL'),
+        title: Text('Verify URL'),
       ),
       body: Container(
         margin: EdgeInsets.only(top: 200),
