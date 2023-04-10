@@ -114,6 +114,11 @@ class _MyHomePageState extends State<MyHomePage> {
                           ],
                         ),
                       ),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -138,11 +143,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -157,59 +157,11 @@ class _MyHomePageState extends State<MyHomePage> {
                             ElevatedButton(
                               child: Text('Protect UPI'),
                               onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) => Phone()),
-                                // );
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                        ),
-                        child: Column(
-                          children: [
-                            Image.network(
-                                width: 50,
-                                height: 50,
-                                'https://th.bing.com/th/id/OIP.JbEPq8-iEaHuAZ4lLdA7jwHaHT?pid=ImgDet&rs=1'),
-                            ElevatedButton(
-                              child: Text('Secure Wallet'),
-                              onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) => Phone()),
-                                // );
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                        ),
-                        child: Column(
-                          children: [
-                            Image.network(
-                                width: 50,
-                                height: 50,
-                                'https://www.logolynx.com/images/logolynx/74/743595a172106c86747b4074d00f9732.png'),
-                            ElevatedButton(
-                              child: Text('Remove SMS'),
-                              onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) => Phone()),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => UPI()),
+                                );
                               },
                             ),
                           ],
