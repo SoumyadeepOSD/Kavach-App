@@ -40,6 +40,13 @@ dependencies:
   call_log: ^4.0.0
   sms: ^0.2.4
   flutter_barcode_scanner: ^2.0.0
+  http: ^0.13.5
+  cloud_firestore: ^4.5.0
+  firebase_core: ^2.9.0
+  firebase_auth: ^4.4.0
+  google_sign_in: ^6.1.0
+  provider: ^6.0.5
+  font_awesome_flutter: ^10.4.0
 
 dev_dependencies:
   flutter_test:

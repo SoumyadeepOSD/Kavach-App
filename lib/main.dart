@@ -1,21 +1,33 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kavach/SMS.dart';
+import 'package:kavach/URL.dart';
+import 'package:kavach/google_sign_in.dart';
 import 'package:kavach/phone.dart';
+import 'package:provider/provider.dart';
 import 'UPI.dart';
+import 'onboard.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+import 'package:flutter/gestures.dart';
+
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  GestureBinding.instance.resamplingEnabled = true;
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      home: const MyHomePage(title: 'Secure India'),
-    );
-  }
+  Widget build(BuildContext context) => ChangeNotifierProvider(
+        create: (context) => GoogleSignInProvider(),
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          home: OnBoard(),
+        ),
+      );
 }
 
 class MyHomePage extends StatefulWidget {
@@ -133,11 +145,11 @@ class _MyHomePageState extends State<MyHomePage> {
                             ElevatedButton(
                               child: Text('Scan URLS'),
                               onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) => Phone()),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => URL()),
+                                );
                               },
                             ),
                           ],
@@ -171,6 +183,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              'मेरा भारत गौरव है',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w600),
             ),
           ],
         ),

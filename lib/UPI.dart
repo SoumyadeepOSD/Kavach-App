@@ -73,109 +73,107 @@ class _UPIState extends State<UPI> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Barcode scan'),
-          backgroundColor: Colors.black,
-        ),
-        body: Builder(
-          builder: (BuildContext context) {
-            info = _scanBarcode.toString();
-            String upi = UPIID(info);
-            String marchantname = NAME(info);
-            String phone = PHONE(info);
-            return Container(
-              alignment: Alignment.center,
-              child: Flex(
-                direction: Axis.vertical,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    width: 200,
-                    height: 100,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          primary: Colors.blue.shade600,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Barcode scan'),
+        backgroundColor: Colors.black,
+      ),
+      body: Builder(
+        builder: (BuildContext context) {
+          info = _scanBarcode.toString();
+          String upi = UPIID(info);
+          String marchantname = NAME(info);
+          String phone = PHONE(info);
+          return Container(
+            alignment: Alignment.center,
+            child: Flex(
+              direction: Axis.vertical,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  width: 200,
+                  height: 100,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
                         ),
-                        onPressed: () => scanBarcodeNormal(),
-                        child: Text(
-                          'UPI Scan',
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                        )),
+                        primary: Colors.blue.shade600,
+                      ),
+                      onPressed: () => scanBarcodeNormal(),
+                      child: Text(
+                        'UPI Scan',
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      )),
+                ),
+                // ElevatedButton(
+                //     onPressed: () => scanQR(),
+                //     child: Text('Start QR scan')),
+                // ElevatedButton(
+                //     onPressed: () => startBarcodeScanStream(),
+                //     child: Text('Start barcode scan stream')),
+                SizedBox(
+                  height: 5,
+                ),
+                Text('User Info:\n',
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.w900)),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 20, right: 20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: _scanBarcode != null
+                        ? Colors.lightGreen.shade100
+                        : Colors.white,
                   ),
-                  // ElevatedButton(
-                  //     onPressed: () => scanQR(),
-                  //     child: Text('Start QR scan')),
-                  // ElevatedButton(
-                  //     onPressed: () => startBarcodeScanStream(),
-                  //     child: Text('Start barcode scan stream')),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text('User Info:\n',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w900)),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 20, right: 20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: _scanBarcode != null
-                          ? Colors.lightGreen.shade100
-                          : Colors.white,
-                    ),
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 8, bottom: 8, left: 30, right: 10),
-                        child: Column(
-                          children: [
-                            marchantname != null
-                                ? Text(
-                                    'Name: ${marchantname}',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  )
-                                : Text(''),
-                            phone != null
-                                ? Text(
-                                    'Phone:${phone}',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  )
-                                : Text(''),
-                            Text(
-                              'UPI:${upi}',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400,
-                              ),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 8, bottom: 8, left: 30, right: 10),
+                      child: Column(
+                        children: [
+                          marchantname != null
+                              ? Text(
+                                  'Name: ${marchantname}',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                )
+                              : Text(''),
+                          phone != null
+                              ? Text(
+                                  'Phone:${phone}',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                )
+                              : Text(''),
+                          Text(
+                            'UPI:${upi}',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                ],
-              ),
-            );
-          },
-        ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
